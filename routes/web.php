@@ -11,6 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::resource('/','IndexController');
+Route::get('/admin',['middleware' => 'auth','uses' => 'IndexController@execute','as' => 'adminPage']);
+Route::post('/admin',['middleware' => 'auth','uses' => 'IndexController@search','as' => 'adminPage']);
+
+
+
+
+
+Auth::routes();
+
+
+Route::get('/home', 'HomeController@index')->name('home');
