@@ -14,6 +14,10 @@
                 <label for="last_name">Keyword</label>
                 <input type="text" class="form-control" id="keyword" name="keyword" value="{{ old('last_name') }}" placeholder="Keyword">
             </div>
+            <div class="form-group">
+                <label for="last_name">Resume(file name)</label>
+                <input type="text" class="form-control" id="file_name" name="file_name" value="{{ old('file_name') }}" placeholder="Keyword">
+            </div>
             <button type="submit" class="btn btn-primary">Search</button>
 
         </form>
@@ -28,6 +32,7 @@
             <th>First Name</th>
             <th>Last Name</th>
             <th>Keywords</th>
+            <th>Resume</th>
         </tr>
         </thead>
         <tbody>
@@ -38,6 +43,7 @@
                     <td>{{$data->first_name}}</td>
                     <td>{{$data->last_name}}</td>
                     <td>{{$data->keywords}}</td>
+                    <td>{{$data->resume}}</td>
                 </tr>
             @endforeach
         </tbody>

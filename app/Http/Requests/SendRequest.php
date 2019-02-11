@@ -28,6 +28,7 @@ class SendRequest extends FormRequest
             'first_name' => 'required',
             'last_name' => 'required',
             'keywords' => 'required',
+            'resume' => 'required',
         ];
     }
 

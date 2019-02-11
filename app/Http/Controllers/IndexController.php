@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SendRequest;
 use App\People;
+use App\User;
+use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,7 +26,12 @@ class IndexController extends Controller
         //
     }
 
-    public function execute(){
+    public function execute(User $user){
+        $people = new People();
+        if(Gate::denies('search',$people)){
+            abort(404);
+        }
+
         $data = DB::table('peoples')->get();
 
         $arr = [
@@ -36,8 +43,14 @@ class IndexController extends Controller
     public function search(Request $request){
 
         $input = $request->except('_token');
+        //dd($input);
 
-        $data = DB::table('peoples')->where('first_name','like','%'.$input['first_name'].'%')->get();
+        $data = DB::table('peoples')
+            ->where('first_name','like','%'.$input['first_name'].'%')
+            ->where('last_name','like','%'.$input['last_name'].'%')
+            ->where('keywords','like','%'.$input['keyword'].'%')
+            ->where('resume','like','%'.$input['file_name'].'%')
+            ->get();
 
         $arr = [
           'datas' => $data
@@ -56,9 +69,9 @@ class IndexController extends Controller
         $input = $request->except('_token');
 
 
-        if($request->hasFile('keywords')) {
-            $file = $request->file('keywords');
-            $input['keywords'] = $file->getClientOriginalName();
+        if($request->hasFile('resume')) {
+            $file = $request->file('resume');
+            $input['resume'] = $file->getClientOriginalName();
             $file->move(public_path('files/'),$input['keywords']);
            // dd($input);
         }
