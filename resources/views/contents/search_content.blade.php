@@ -1,3 +1,5 @@
+
+
 <div class="row border border">
     <div class="col-lg-4">
         <form method="post" action="{{ route('adminPage') }}" >
@@ -19,7 +21,7 @@
                 <input type="text" class="form-control" id="file_name" name="file_name" value="{{ old('file_name') }}" placeholder="Keyword">
             </div>
             <button type="submit" class="btn btn-primary">Search</button>
-
+            <a class="btn btn-primary float-right" href="/" role="button">Back</a>
         </form>
     </div>
 </div>
@@ -33,6 +35,7 @@
             <th>Last Name</th>
             <th>Keywords</th>
             <th>Resume</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -40,10 +43,17 @@
             @foreach($datas as $data)
                 <tr>
                     <td>{{$data->id}}</td>
-                    <td>{{$data->first_name}}</td>
+                    <td><a href="/admin/edit/{{$data->id}}">{{$data->first_name}}</a></td>
                     <td>{{$data->last_name}}</td>
                     <td>{{$data->keywords}}</td>
                     <td>{{$data->resume}}</td>
+                    <td>
+                        <form action="{{route('adminDelete',['id' => $data->id])}}" method="post">
+                            {!! csrf_field() !!}
+                            <input type="hidden" name="id" value="{{$data->id}}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

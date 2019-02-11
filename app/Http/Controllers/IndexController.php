@@ -27,6 +27,7 @@ class IndexController extends Controller
     }
 
     public function execute(User $user){
+
         $people = new People();
         if(Gate::denies('search',$people)){
             abort(404);
@@ -51,7 +52,6 @@ class IndexController extends Controller
             ->where('keywords','like','%'.$input['keyword'].'%')
             ->where('resume','like','%'.$input['file_name'].'%')
             ->get();
-
         $arr = [
           'datas' => $data
         ];
@@ -72,7 +72,7 @@ class IndexController extends Controller
         if($request->hasFile('resume')) {
             $file = $request->file('resume');
             $input['resume'] = $file->getClientOriginalName();
-            $file->move(public_path('files/'),$input['keywords']);
+            $file->move(public_path('files/'),$input['resume']);
            // dd($input);
         }
 

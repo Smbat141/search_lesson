@@ -20,7 +20,7 @@
             <input type="file" class="form-control" id="resume" name="resume">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
-
     </form>
+    <a class="btn btn-primary float-right" href="/admin" role="button">Admin Page</a>
 
 </div>
