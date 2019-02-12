@@ -46,7 +46,7 @@
                     <td><a href="/admin/edit/{{$data->id}}">{{$data->first_name}}</a></td>
                     <td>{{$data->last_name}}</td>
                     <td>{{$data->keywords}}</td>
-                    <td>{{$data->resume}}</td>
+                    <td><a href="admin/download/{{$data->id}}">{{$data->resume}}</a></td>
                     <td>
                         <form action="{{route('adminDelete',['id' => $data->id])}}" method="post">
                             {!! csrf_field() !!}

@@ -6,6 +6,7 @@ use App\Http\Requests\SendRequest;
 use App\People;
 use App\User;
 use Gate;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,26 +14,15 @@ class IndexController extends Controller
 {
 
     public function index(){
-        return view('welcome');
+        $user = Auth::user();
+        $data = [
+            'user' => $user,
+        ];
+        //dd($user);
+        return view('welcome',$data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    public function execute(User $user){
-
-        $people = new People();
-        if(Gate::denies('search',$people)){
-            abort(404);
-        }
-
+    public function execute(){
         $data = DB::table('peoples')->get();
 
         $arr = [
@@ -58,22 +48,18 @@ class IndexController extends Controller
         return view('index_site.admin',$arr);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(SendRequest $request)
     {
         $input = $request->except('_token');
-
+       // dd($input);
 
         if($request->hasFile('resume')) {
             $file = $request->file('resume');
-            $input['resume'] = $file->getClientOriginalName();
-            $file->move(public_path('files/'),$input['resume']);
-           // dd($input);
+            $file->store('files','public');
+            $input['resume'] = $file->hashName();
+            //dd($input);
+
         }
 
         $people = new People();
