@@ -1,4 +1,9 @@
-<div class="container border ">
+<div class="container border">
+    <a class="btn btn-primary float-right" href="/login" role="button">Login</a>
+    <a class="btn btn-primary float-right" href="/register" role="button">Register</a>
+
+</div>
+<div class="container border">
     <h1 class="text-center">Enter Your Data</h1>
     <form method="post" action="" enctype="multipart/form-data">
         {!! csrf_field() !!}
@@ -21,6 +26,13 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-    <a class="btn btn-primary float-right" href="/admin" role="button">Admin Page</a>
+    @if($user != null)
+        @foreach($user->roles as $use)
+            @if($use->name == 'Admin')
+                <a class="btn btn-primary float-right" href="/admin" role="button">Admin Page</a>
+            @endif
+        @endforeach
+    @endif
+
 
 </div>

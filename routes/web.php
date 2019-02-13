@@ -14,7 +14,7 @@
 Route::resource('/','IndexController');
 
 
-Route::group(['prefix' => 'admin','middleware' => 'auth'],function (){
+Route::group(['prefix' => 'admin','middleware' => ['auth','admin']],function (){
     Route::get('/',['uses' => 'IndexController@execute','as' => 'adminPage']);
     Route::post('/',['uses' => 'IndexController@search','as' => 'adminPage']);
 
@@ -23,10 +23,8 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function (){
     Route::post('/edit',['uses' => 'AdminController@store','as' => 'adminEdit']);
     //admin/delete/data
     Route::post('/delete/data/{id}',['uses' => 'AdminController@delete','as' => 'adminDelete']);
-
-
-
-
+    //admin/download/{resume}
+    Route::get('/download/{id}',['uses' => 'AdminController@download','as' => 'adminDownload']);
 });
 
 
@@ -36,4 +34,4 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'],function (){
 Auth::routes();
 
 
-//Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');

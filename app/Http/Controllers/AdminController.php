@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\People;
+use Response;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller{
@@ -19,8 +20,8 @@ class AdminController extends Controller{
 
         if($request->hasFile('resume')){
             $file = $request->file('resume');
-            $file->move(public_path('files/'),$input['resume']);
-            $input['resume'] = $file->getClientOriginalName();
+            $file->store('uploads','public');
+            $input['resume'] = $file->hashName();
         }
 
         $people->fill($input);
@@ -35,5 +36,11 @@ class AdminController extends Controller{
         $people->delete();
 
         return redirect()->route('adminPage')->with('message','Data Deleted');
+    }
+
+    public function download($id){
+        $people = People::find($id);
+        $file= storage_path()."\app\public\\files\\".$people->resume;
+        return Response::download($file,$people->resume);
     }
 }
